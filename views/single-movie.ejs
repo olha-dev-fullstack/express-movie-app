@@ -10,11 +10,11 @@
 				</h1>
 				
 				<h3 class="single-movie-title">
-					<%= parsedData.title %>
+					<%= parsedData.tagline %>
 				</h3>
 				
 
-				<img src="<%= imageBaseUrl + parsedData.poster_path%>" />
+				<a href="<%= parsedData.homepage%>"><img src="<%= imageBaseUrl + parsedData.poster_path%>" /></a>
 				
 				<p class="overview-header">Movie Synopsis: <span class="single-movie-overview">
 					<%= parsedData.overview%>
@@ -39,8 +39,15 @@
         <h4 class="modal-title" id="myModalLabel">Movie Information</h4>
       </div>
       <div class="modal-body">
-
-
+		<a href="https://www.imdb.com/title/<%= parsedData.imdb_id%>" target="_blank">IMDB</a>
+		  <p><%= parsedData.budget %></p>
+		  <p><%= parsedData.revenue %></p>
+		  <p><%= parsedData.release_date %></p>
+		  <ul>
+			<% parsedData.production_companies.forEach((company) => { %>
+				<li><%= company.name %></li>
+			<% }) %>
+		</ul>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
