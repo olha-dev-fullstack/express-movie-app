@@ -3,6 +3,7 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+require("dotenv").config();
 
 var indexRouter = require("./routes/index");
 const movieRouter = require("./routes/movie");
@@ -12,7 +13,17 @@ const helmet = require("helmet");
 
 var app = express();
 app.use(helmet());
-
+app.use((req, res, next) => {
+  if (
+    req.headers.authorization === undefined ||
+    req.headers["authorization"].split(" ")[1] !== process.env.API_ACCESS_TOKEN
+  ) {
+    res.status(401);
+    res.json("Invalid API Key");
+    return;
+  }
+  next();
+});
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "jade");
