@@ -3,6 +3,7 @@ const { log } = require("console");
 var express = require("express");
 var router = express.Router();
 const request = require("request");
+const passport = require("passport");
 
 const authorizationHeader = {
   headers: {
@@ -18,23 +19,31 @@ router.use((req, res, next) => {
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
+  console.log(req.user);
   request.get(
     process.env.NOW_PLAYING_URL,
     authorizationHeader,
     (error, response, movieData) => {
       const parsedData = JSON.parse(movieData);
-      console.log(parsedData);
       res.render("index", {
         parsedData: parsedData.results,
       });
     }
   );
 });
+router.get("/login", passport.authenticate("github"));
+
+router.get(
+  "/auth",
+  passport.authenticate("github", {
+    successRedirect: "/",
+    failureRedirect: "/loginFailed",
+  })
+);
 
 router.get("/movie/:id", (req, res, next) => {
   movieId = req.params.id;
   const thisMovieUrl = `${process.env.API_BASE_URL}/movie/${movieId}`;
-  console.log(thisMovieUrl);
   request.get(
     thisMovieUrl,
     authorizationHeader,
