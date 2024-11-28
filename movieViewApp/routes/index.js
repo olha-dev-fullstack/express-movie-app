@@ -1,4 +1,5 @@
 require("dotenv").config();
+const { log } = require("console");
 var express = require("express");
 var router = express.Router();
 const request = require("request");
@@ -6,7 +7,7 @@ const request = require("request");
 const authorizationHeader = {
   headers: {
     accept: "application/json",
-    Authorization: `Bearer ${process.env.API_ACCESS_TOKEN}`,
+    authorization: `Bearer ${process.env.API_ACCESS_TOKEN}`,
   },
 };
 
@@ -22,6 +23,7 @@ router.get("/", function (req, res, next) {
     authorizationHeader,
     (error, response, movieData) => {
       const parsedData = JSON.parse(movieData);
+      console.log(parsedData);
       res.render("index", {
         parsedData: parsedData.results,
       });
@@ -32,11 +34,13 @@ router.get("/", function (req, res, next) {
 router.get("/movie/:id", (req, res, next) => {
   movieId = req.params.id;
   const thisMovieUrl = `${process.env.API_BASE_URL}/movie/${movieId}`;
+  console.log(thisMovieUrl);
   request.get(
     thisMovieUrl,
     authorizationHeader,
     (error, response, movieData) => {
       const parsedData = JSON.parse(movieData);
+      console.log(parsedData);
       res.render("single-movie", {
         parsedData,
       });
