@@ -8,7 +8,9 @@ class FileForm extends Component {
     const file = document.getElementById("file-field").files[0];
     const file2 = document.getElementById("file-field2").files[0];
 
-    let url = "http://localhost:3030/uploadFile";
+    // let url = "http://localhost:3030/uploadFile";
+    let url = "http://localhost:3030/uploadS3";
+
     const config = {
       headers: {
         "content-type": "multipart/form-data",
