@@ -1,5 +1,4 @@
 require("dotenv").config();
-const { log } = require("console");
 var express = require("express");
 var router = express.Router();
 const request = require("request");
